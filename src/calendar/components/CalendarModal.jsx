@@ -1,22 +1,43 @@
-import Modal from 'react-modal'
+import { useState } from 'react';
+import Modal from 'react-modal';
+
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+
+Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
 
-    const onCloseModal=()=>{
+  const [isOpen, setIsOpen] = useState(true);
+    const onCloseModal = () =>{
         console.log('Cerrando Modal');
-    }
+        setIsOpen(false);
+    };
+
 
   return (
     <Modal
-        isOpen={true}
-
+        isOpen={ isOpen }
         onRequestClose={onCloseModal}
         style={customStyles}
+        className="modal"
+        overlayClassName="modal-fondo"
+        closeTimeoutMS={200}
         
     >
-        <H1>Hola mundo</H1>
+        <h1>Hola mundo</h1>
         <hr />
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem perspiciatis exercitationem nostrum, impedit quisquam corrupti ipsum quia, perferendis maxime explicabo a. Impedit cum laborum, iusto blanditiis ullam recusandae voluptatum a?</p>
+        <p>Rem perspiciatis exercitationem nostrum, impedit quiluptatum a?</p>
     </Modal>
   )
 }

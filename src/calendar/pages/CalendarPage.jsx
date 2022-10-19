@@ -23,19 +23,6 @@ const events = [{
 
 }];
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
-
-Modal.setAppElement('#yourAppElement');
-
 export const CalendarPage = () => {
 
   const [lastView, setlasView]= useState( localStorage.setIte,  ('lastView') || 'week')
@@ -90,7 +77,7 @@ export const CalendarPage = () => {
       onView= {onViewChanged}
     />
 
-    <CalendarModal/>
+    <CalendarModal />
 
 
     </>
