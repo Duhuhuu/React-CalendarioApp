@@ -4,7 +4,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { addHours } from "date-fns";
 
 
-import { Navbar, CalendarEvent } from "../";
+import { Navbar, CalendarEvent, CalendarModal } from "../";
 import { localizer, getMessagesES } from '../../helpers';
 import { useState } from 'react';
 
@@ -21,7 +21,20 @@ const events = [{
     name: 'Fernando'
   }
 
-}]
+}];
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+Modal.setAppElement('#yourAppElement');
 
 export const CalendarPage = () => {
 
@@ -53,6 +66,7 @@ export const CalendarPage = () => {
 
   const onViewChanged = ( event ) =>{
     localStorage.setItem('lastView', event);
+    setlasView(event)
   }
 
 
@@ -76,7 +90,7 @@ export const CalendarPage = () => {
       onView= {onViewChanged}
     />
 
-
+    <CalendarModal/>
 
 
     </>
