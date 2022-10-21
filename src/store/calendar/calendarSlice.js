@@ -15,6 +15,7 @@ const tempEvent =  {
   
   }
 
+// Slice del calendario, donde se crean los Reducers del las acciones del calendario.
 export const calendarSlice = createSlice({
     name: 'calendar',
     initialState: {
@@ -22,12 +23,38 @@ export const calendarSlice = createSlice({
        activeEvent: null
     },
     reducers: {
+      // Reducer para activar las notas!
         onSetActiveEvent: (state, {payload}) =>{
             state.activeEvent = payload;
-        }
+        },
+     // Reducer para agregar nuevas notas!
+        onAddNewEvent: (state, {payload}) => {
+          state.events.push( payload );
+          state.activeEvent = null;
+        },
+     // Reducer para modificar notas ya existentes!
+        onUpdateEvent: (state, {payload}) => {
+          state.events = state.events.map( event=>{
+              if (event._id === payload._id )
+              
+              return payload;
+          })
+          
+        },
+      // Reducer para eliminar notas ya existentes!
+        onDeleteEvent: ( state ) => {
+
+          if (state.activeEvent){
+            state.events = state.events.filter( event => event._id !== state.activeEvent._id )
+            state.activeEvent = null;
+          }
+
+        },
+
     }
 });
 
 
+// Exportacion de los reducers!
 // Action creators are generated for each case reducer function
-export const { onSetActiveEvent } = calendarSlice.actions;
+export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent } = calendarSlice.actions;
