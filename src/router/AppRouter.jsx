@@ -1,28 +1,47 @@
+import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "../auth";
 import { CalendarPage } from "../calendar";
-import { getEnvVariables } from "../helpers";
+import { useAuthStore } from "../hooks";
 
 export const AppRouter = () => {
   
-
-    const authSatus= 'not-authenticated'; // 'not-authenticated'; 'not-authenticated';
+    //mando llamar el check para ver si el usuario esta logeado con su Json Web Token
+    // y si no lo esta para que no lo deje meterse a ningun lado y tenga que logearse.
+    const { status, checkAuthToken } = useAuthStore();
+    //const authSatus= 'not-authenticated'; // 'not-authenticated'; 'not-authenticated';
+  
+    useEffect(() => {
+        checkAuthToken();
+    }, [])
     
-    console.log(getEnvVariables());
+
+
+    if ( status === 'checking' ) {
+        return (
+            <h3>Cargando...</h3>
+        )
+    }
+
+    
     return (
-    <Routes>
-        { 
-            (authSatus === 'not-authenticated' )
-            ? <Route path="/auth/*" element={ <LoginPage />  } />
-            : <Route path="/*" element={ <CalendarPage />  } />
-            
-        }
-      
-        <Route path="/*" element={ <Navigate to="/auth/login" />  } />
+        <Routes>
+            {
+                ( status === 'not-authenticated')  
+                    ? (
+                        <>
+                            <Route path="/auth/*" element={ <LoginPage /> } />
+                            <Route path="/*" element={ <Navigate to="/auth/login" /> } />
+                        </>
+                    )
+                    : (
+                        <>
+                            <Route path="/" element={ <CalendarPage /> } />
+                            <Route path="/*" element={ <Navigate to="/" /> } />
+                        </>
+                    )
+            }
 
-    </Routes>
-
-  )
+        </Routes>
+    )
 }
-
-
