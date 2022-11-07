@@ -23,18 +23,23 @@ export const useAuthStore = () => {
             }, 10);
         }
     }
-    const starRegister = async({ email, password, name }) => {
-        dispatch( onChecking() );
+
+    const starRegister = async({ name, email, password }) =>{
+
+        dispatch(onChecking);
+
         try {
-            const { data } = await calendarApi.post('/auth/new',{ email, password, name });
-            localStorage.setItem('token', data.token );
+            const { data } = await calendarApi.post('/auth/new',{ name, email, password});
+            localStorage.setItem('token',data.token)
             localStorage.setItem('token-init-date', new Date().getTime() );
-            dispatch( onLogin({ name: data.name, uid: data.uid }) );
-            
+            dispatch(onLogin({name: data.name , uid: data.uid }));
+
         } catch (error) {
-            dispatch( onLogout( error.response.data?.msg || '--' ) );
+            console.log(error)
+          
+            dispatch(onLogout(error.response.data?.msg || 'Error con los datos' ))
             setTimeout(() => {
-                dispatch( clearErrorMessage() );
+                dispatch(clearErrorMessage());
             }, 10);
         }
     }
