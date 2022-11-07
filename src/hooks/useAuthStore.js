@@ -5,68 +5,63 @@ import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store"
 
 export const useAuthStore = () => {
 
-    const { status, user, errorMessage } = useSelector( state => state.auth )
-    const dispatch =  useDispatch()
+    const { status, user, errorMessage } = useSelector( state => state.auth );
+    const dispatch = useDispatch();
 
-    const starLogin = async({ email, password }) =>{
-        console.log({ email, password })
-        dispatch(onChecking);
+    const starLogin = async({ email, password }) => {
+        dispatch( onChecking() );
         try {
-            // const resp = await calendarApi.post('/auth')
-            const {data} = await calendarApi.post('/auth',{ email, password});
-            localStorage.setItem('token',data.token)
+            const { data } = await calendarApi.post('/auth',{ email, password });
+            localStorage.setItem('token', data.token );
             localStorage.setItem('token-init-date', new Date().getTime() );
-
-            dispatch(onLogin({name: data.name , uid: data.uid}));
-
+            dispatch( onLogin({ name: data.name, uid: data.uid }) );
+            
         } catch (error) {
-            dispatch(onLogout('Credenciales Incorrectas'))
+            dispatch( onLogout('Credenciales incorrectas') );
             setTimeout(() => {
-                dispatch(clearErrorMessage());
+                dispatch( clearErrorMessage() );
             }, 10);
         }
-
     }
-
-    const starRegister = async({ name, email, password }) =>{
-
-        dispatch(onChecking);
-
+    const starRegister = async({ email, password, name }) => {
+        dispatch( onChecking() );
         try {
-            const { data } = await calendarApi.post('/auth/new',{ name, email, password});
-            localStorage.setItem('token',data.token)
+            const { data } = await calendarApi.post('/auth/new',{ email, password, name });
+            localStorage.setItem('token', data.token );
             localStorage.setItem('token-init-date', new Date().getTime() );
-            dispatch(onLogin({name: data.name , uid: data.uid }));
-
+            dispatch( onLogin({ name: data.name, uid: data.uid }) );
+            
         } catch (error) {
-            console.log(error)
-          
-            dispatch(onLogout(error.response.data?.msg || 'Error con los datos' ))
+            dispatch( onLogout( error.response.data?.msg || '--' ) );
             setTimeout(() => {
-                dispatch(clearErrorMessage());
+                dispatch( clearErrorMessage() );
             }, 10);
         }
     }
 
-    const checkAuthToken =  async() =>{
 
+    const checkAuthToken = async() => {
+        
+        
         const token = localStorage.getItem('token');
         if ( !token ) return dispatch( onLogout() );
-
         try {
-            const { data } = await calendarApi.get('auth/renew');
-            localStorage.setItem('token',data.token)
-            localStorage.setItem('token-init-date', new Date().getTime() );
-            dispatch(onLogin({name: data.name , uid: data.uid }));
 
+            const { data } = await calendarApi.get('auth/renew');
+            localStorage.setItem('token', data.token );
+            localStorage.setItem('token-init-date', new Date().getTime() );
+            dispatch( onLogin({ name: data.name, uid: data.uid }) );
         } catch (error) {
+
             localStorage.clear();
             dispatch( onLogout() );
+
         }
     }
+
     const startLogout = () => {
         localStorage.clear();
-        dispatch(onLogout);
+        dispatch(onLogout());
     }
 
     return {

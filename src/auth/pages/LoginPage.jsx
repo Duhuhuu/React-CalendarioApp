@@ -38,7 +38,7 @@ export const LoginPage = () => {
 
         starRegister({name:registerName, email:registerEmail, password:registerPassword,})
     }
-
+    // Swal.fire('Registro exitoso!', 'Usuario registrado!!', 'success');
     useEffect(() => {
       if(errorMessage !== undefined){
         Swal.fire('Error en la Autentificacion', errorMessage, 'error');

@@ -8,9 +8,10 @@ export const AppRouter = () => {
   
     //mando llamar el check para ver si el usuario esta logeado con su Json Web Token
     // y si no lo esta para que no lo deje meterse a ningun lado y tenga que logearse.
+   
     const { status, checkAuthToken } = useAuthStore();
-    //const authSatus= 'not-authenticated'; // 'not-authenticated'; 'not-authenticated';
-  
+    // const authStatus = 'not-authenticated'; // 'authenticated'; // 'not-authenticated';
+
     useEffect(() => {
         checkAuthToken();
     }, [])
